@@ -73,6 +73,11 @@ public class WebengageBridge extends ReactContextBaseJavaModule implements PushN
         WebEngage.registerInAppNotificationCallback(this);
     }
 
+    @ReactMethod
+    public void setRegistrationID(String token) {
+        WebEngage.get().setRegistrationID(token);
+    }
+
     private static Date getDate(String value) {
         try {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
@@ -203,6 +208,11 @@ public class WebengageBridge extends ReactContextBaseJavaModule implements PushN
     @ReactMethod
     public void logout(){
         WebEngage.get().user().logout();
+    }
+
+    @ReactMethod
+    public void setOptInChannel(active, channel){
+        WebEngage.get().user().setOptIn(Channel.valueOf(channel), active);
     }
 
     private Map<String, Object> recursivelyDeconstructReadableMap(ReadableMap readableMap) {

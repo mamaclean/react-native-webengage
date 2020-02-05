@@ -90,6 +90,9 @@ RCT_EXPORT_METHOD(init:(BOOL)autoRegister) {
     [[WebEngage sharedInstance] application:[UIApplication sharedApplication] didFinishLaunchingWithOptions:@{} notificationDelegate:self autoRegister:YES];
 }
 
+RCT_EXPORT_METHOD(setRegistrationID:(NSString *)token){
+}
+
 RCT_EXPORT_METHOD(trackEventWithName:(NSString *)name){
     [[WebEngage sharedInstance].analytics trackEventWithName:name];
 }
