@@ -211,8 +211,28 @@ public class WebengageBridge extends ReactContextBaseJavaModule implements PushN
     }
 
     @ReactMethod
-    public void setOptInChannel(boolean active, String channel){
-        WebEngage.get().user().setOptIn(Channel.valueOf(channel), active);
+    public void setOptInChannel(boolean active, String channelName){
+        Channel channel;
+        switch (channelName) {
+                 case "push":
+                     channel = Channel.PUSH;
+                     break;
+                 case "in_app":
+                    channel = Channel.IN_APP;
+                    break;
+                 case "email":
+                    channel = Channel.EMAIL;
+                    break;
+                 case "sms":
+                     channel = Channel.SMS;
+                     break;
+                 case "whatsapp":
+                     channel = Channel.WHATSAPP;
+                     break;
+                 default:
+                     throw new IllegalArgumentException("Invalid channel: " + channelName);
+             }
+        WebEngage.get().user().setOptIn(channel, active);
     }
 
     private Map<String, Object> recursivelyDeconstructReadableMap(ReadableMap readableMap) {
