@@ -91,14 +91,14 @@ RCT_EXPORT_METHOD(init:(BOOL)autoRegister) {
 }
 
 RCT_EXPORT_METHOD(setRegistrationID:(NSString *)token){
-    [[WebEngage sharedInstance].analytics
-        trackEventWithName:@"we_gcm_registered"
-                  andValue:@{
-                    @"event_data_overrides" : @{@"gcm_regId" : token}
-                  }];
-    NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
-    [preferences setObject:token forKey:@"gcm_registered_token"];
-    [preferences synchronize];
+//     [[WebEngage sharedInstance].analytics
+//         trackEventWithName:@"we_gcm_registered"
+//                   andValue:@{
+//                     @"event_data_overrides" : @{@"gcm_regId" : token}
+//                   }];
+//     NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
+//     [preferences setObject:token forKey:@"gcm_registered_token"];
+//     [preferences synchronize];
 }
 
 RCT_EXPORT_METHOD(trackEventWithName:(NSString *)name){
