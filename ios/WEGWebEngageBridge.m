@@ -85,20 +85,18 @@ RCT_EXPORT_MODULE(webengageBridge);
 }
 
 RCT_EXPORT_METHOD(init:(BOOL)autoRegister) {
-    UNUserNotificationCenter* center = [UNUserNotificationCenter  currentNotificationCenter];
-    center.delegate = self;
-    [[WebEngage sharedInstance] application:[UIApplication sharedApplication] didFinishLaunchingWithOptions:@{} notificationDelegate:self autoRegister:YES];
+    [[WebEngage sharedInstance] application:[UIApplication sharedApplication] didFinishLaunchingWithOptions:@{} notificationDelegate:self autoRegister:autoRegister];
 }
 
 RCT_EXPORT_METHOD(setRegistrationID:(NSString *)token){
-//     [[WebEngage sharedInstance].analytics
-//         trackEventWithName:@"we_gcm_registered"
-//                   andValue:@{
-//                     @"event_data_overrides" : @{@"gcm_regId" : token}
-//                   }];
-//     NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
-//     [preferences setObject:token forKey:@"gcm_registered_token"];
-//     [preferences synchronize];
+     [[WebEngage sharedInstance].analytics
+         trackEventWithName:@"we_gcm_registered"
+                   andValue:@{
+                     @"event_data_overrides" : @{@"gcm_regId" : token}
+                   }];
+     NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
+     [preferences setObject:token forKey:@"gcm_registered_token"];
+     [preferences synchronize];
 }
 
 RCT_EXPORT_METHOD(trackEventWithName:(NSString *)name){
@@ -256,8 +254,10 @@ RCT_EXPORT_METHOD(logout){
     [self sendEventWithName:@"notificationShown" body:inAppNotificationData];
 }
 
--(void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler{
-  [self sendEventWithName:@"pushNotificationClicked" body:response.notification.request.content.userInfo];
+-(void)WEGHandleDeeplink:(NSString *)deeplink userData:(NSDictionary *)data{
+    RCTLogInfo(@"webengageBridge: push notification clicked with deeplink: %@", deeplink);
+    NSDictionary *pushData = @{@"deeplink":deeplink, @"userData":data};
+    [self sendEventWithName:@"pushNotificationClicked" body:pushData];
 }
 
 @end
